@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: -1131802689570784725, guid: f932b442bdc5088478f55e41c4e510d5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5503293, g: 0.6501956, b: 0.7830189, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -207,5 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16b6daa1cc579745868fb18504d117f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  riseSpeed: 0.3
-  lifetime: 8
+  timeToFish: 15
+  Fish: {fileID: 1943841614628508196, guid: 7cec625c0d7cb0f468f4fa41bb3e8e77, type: 3}
+  fishIsFood: 1

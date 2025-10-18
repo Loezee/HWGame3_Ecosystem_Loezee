@@ -202,8 +202,8 @@ Transform:
   m_GameObject: {fileID: 441981927}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.96, y: 10.13, z: 0}
-  m_LocalScale: {x: 0.29973146, y: 0.29973146, z: 0.29973146}
+  m_LocalPosition: {x: -5.5547, y: 10.13, z: 0}
+  m_LocalScale: {x: 0.30965257, y: 0.29973146, z: 0.29973146}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -246,7 +246,7 @@ MonoBehaviour:
   bubblePrefab: {fileID: 927384877868870069, guid: 199b7b78a4d756a4aa7a4374217fdc14, type: 3}
   spawnPoint: {fileID: 0}
   spawnJitter: {x: 0.25, y: 0.15, z: 0}
-  spawnXRange: {x: -16, y: 16, z: 0}
+  spawnXRange: {x: -20, y: 10, z: 0}
   spawnYRange: {x: -8, y: 8, z: 0}
 --- !u!1 &477284678
 GameObject:
