@@ -2,68 +2,157 @@ using UnityEngine;
 
 public class BubbleBehavior : MonoBehaviour
 {
-    enum BubbleStates
-    {
-        bubble,
-        fish,
-        shark
+
+    enum BubbleStates 
+    { 
+        Bubble, 
+        Shark, 
+        SharkDead 
     }
 
-    [SerializeField]
-    float timeToFish;
 
-    [SerializeField]
-    GameObject Fish;
+    BubbleStates state = BubbleStates.Bubble;
 
-    [SerializeField]
-    bool fishIsFood = false;
 
+    [SerializeField] float timeToShark = 12f;   
+    [SerializeField] float sharkLifetime = 8f;  
+    [SerializeField] float sharkDieDuration = 0.1f; 
     float timer;
-    BubbleStates state = BubbleStates.bubble;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] string formParam = "Form";
+    [SerializeField] string bubbleStateName = "Bubble_idle";
+    [SerializeField] string sharkStateName  = "Shark_swim";
+
+    [SerializeField] string foodTag = "food";         
+    [SerializeField] string predatorTag = "predator"; 
+    [SerializeField] string seagullTag = "Seagull";   
+
+    [SerializeField] float sharkCircleRadius = 1.6f;
+    [SerializeField] float sharkAngularSpeedDeg = 70f;
+
+    Vector3 sharkCenter;
+    float sharkAngleDeg;
+
+    SpriteRenderer sr;
+    Animator anim;
+    Collider2D col;
+
+    void Awake()
     {
-        
+        sr   = GetComponent<SpriteRenderer>();
+        col  = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
+        col.isTrigger = true;
     }
 
     void OnEnable()
     {
-        state = BubbleStates.bubble;
-        timer = 0f;
-
-        gameObject.tag = "food";
+        EnterBubble();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (state != BubbleStates.bubble)
+        switch (state)
         {
-            return;
-        } 
+            case BubbleStates.Bubble:
+                RunBubble();
+                break;
+
+            case BubbleStates.Shark:
+                RunShark();
+                break;
+
+            case BubbleStates.SharkDead:
+                RunSharkDead();
+                break;
+        }
+    }
+
+
+    void EnterBubble()
+    {
+        state = BubbleStates.Bubble;
+        timer = 0f;
+        SetForm(0, bubbleStateName);
+        gameObject.tag = foodTag; 
+    }
+
+    void EnterShark()
+    {
+        state = BubbleStates.Shark;
+        timer = 0f;
+        SetForm(2, sharkStateName);
+        gameObject.tag = predatorTag;
+
+        sharkCenter   = transform.position;
+        sharkAngleDeg = Random.Range(0f, 360f);
+    }
+
+    void EnterSharkDead()
+    {
+        state = BubbleStates.SharkDead;
+        timer = 0f;
+
+        gameObject.tag = "Untagged";
+        if (col) 
+        {
+            col.enabled = false;
+        }
+
+        Destroy(gameObject, sharkDieDuration);
+    }
+
+    void RunBubble()
+    {
+        timer += Time.deltaTime;
+        if (timer >= timeToShark)
+        {
+            EnterShark();
+        }
+    }
+
+    void RunShark()
+    {
+        //turning
+        sharkAngleDeg += sharkAngularSpeedDeg * Time.deltaTime;
+        float r = sharkAngleDeg * Mathf.Deg2Rad;
+        Vector3 offset = new Vector3(Mathf.Cos(r), Mathf.Sin(r), 0f) * sharkCircleRadius;
+        transform.position = sharkCenter + offset;
 
         timer += Time.deltaTime;
-        if (timer >= timeToFish)
+        if (timer >= sharkLifetime)
         {
-            TransformIntoFish();
+             EnterSharkDead();
         }
+
     }
 
-    void TransformIntoFish()
+    void RunSharkDead()
     {
-        state = BubbleStates.fish;
-
-        if (Fish != null)
-        {
-            var fish = Instantiate(Fish, transform.position, Quaternion.identity);
-            if (fishIsFood)
-            {
-                fish.tag = "food";
-            }
-
-        }
-
-        Destroy(gameObject); // destroy bubble
+        
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (state == BubbleStates.Shark && other != null && other.CompareTag(seagullTag))
+        {
+            var gull = other.GetComponent<SeagullBehavior>();
+            if (gull != null) 
+            {
+                gull.Die();
+            }
+        }
+    }
+
+    void SetForm(int value, string stateNameToPlay)
+    {
+        if (!anim) 
+        {
+            return;
+        }
+        
+        anim.SetInteger(formParam, value);
+        anim.Play(stateNameToPlay, 0, 0f); 
+    }
+
 }

@@ -207,6 +207,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16b6daa1cc579745868fb18504d117f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToFish: 15
-  Fish: {fileID: 1943841614628508196, guid: 7cec625c0d7cb0f468f4fa41bb3e8e77, type: 3}
-  fishIsFood: 1
+  timeToShark: 10
+  sharkLifetime: 8
+  sharkDieDuration: 0.1
+  formParam: Form
+  bubbleStateName: Bubble_idle
+  sharkStateName: Shark_swim
+  sharkDieStateName: Shark_die
+  foodTag: food
+  predatorTag: predator
+  seagullTag: Seagull
+  sharkCircleRadius: 1.6
+  sharkAngularSpeedDeg: 70

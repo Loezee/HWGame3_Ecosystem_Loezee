@@ -31,7 +31,6 @@ public class SeagullBehavior : MonoBehaviour
     enum SeagullStates
     {
         eating,
-        showering,
         dying,
         idling
     }
@@ -68,16 +67,22 @@ public class SeagullBehavior : MonoBehaviour
             case SeagullStates.eating: 
                 RunEat(); 
                 break;
-            case SeagullStates.showering:
-                break;
             case SeagullStates.dying:
+                RunDying();
                 break;
             default:
                 break;
         }
 
         //animation
-        UpdateAnimation();
+        if (state != SeagullStates.dying) 
+        {
+            UpdateAnimation();
+        }
+        else if (anim) 
+        {
+            anim.SetBool("isWalking", false);
+        }
 
     }
 
@@ -89,7 +94,7 @@ public class SeagullBehavior : MonoBehaviour
             int newTarget = Random.Range(0, possibleTargets.Length); 
             target = possibleTargets[newTarget]; 
             startPos = transform.position; 
-            lerpTime = 0; 
+            lerpTime = 0f; 
         }
         else
         {
@@ -134,6 +139,38 @@ public class SeagullBehavior : MonoBehaviour
                 state = SeagullStates.idling;
             }
         }
+    }
+
+    void RunDying()
+    {
+
+    }
+
+    public void Die()
+    {
+        if (state == SeagullStates.dying)
+        {
+            return;
+        }
+
+
+        state = SeagullStates.dying;
+        target = null;
+
+
+        var col = GetComponent<Collider2D>();
+        if (col) 
+        {
+            col.enabled = false;
+        }
+
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb) 
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        Destroy(gameObject, 1f);
     }
 
     void StepNeeds()
@@ -225,3 +262,6 @@ public class SeagullBehavior : MonoBehaviour
         }
     }
 }
+
+
+
