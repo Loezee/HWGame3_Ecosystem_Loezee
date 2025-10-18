@@ -18,15 +18,14 @@ public class SeagullBehavior : MonoBehaviour
     [SerializeField]
     float hungerStep; 
 
-
+    //animation
+    Animator anim;
+    Vector3 lastPosition;
+    
     Transform target = null; 
     Vector3 startPos = Vector3.zero; 
     
     float lerpTime;
-
-    //animation
-    Animator anim;
-    Vector3 lastPosition;
 
 
     enum SeagullStates
@@ -37,18 +36,14 @@ public class SeagullBehavior : MonoBehaviour
         idling
     }
 
-   
     SeagullStates state = SeagullStates.idling;
 
-    //timer that'll count down for hunger
+    //hunger
     float hungerTime;
-    //hunger stat
     float hungerVal = 5;
 
-    //list for food currently in the scene
     List<GameObject> allFood = new List<GameObject>();
 
-    //holds which game object the seagull has touched
     GameObject touchingObj;
 
 
@@ -86,17 +81,6 @@ public class SeagullBehavior : MonoBehaviour
 
     }
 
-    //animation
-    void UpdateAnimation()
-    {
-        float speed = (transform.position - lastPosition).magnitude / Time.deltaTime;
-
-        bool isMoving = speed > 0.05f;
-
-        anim.SetBool("isWalking", isMoving);
-
-        lastPosition = transform.position;
-    }
 
     void RunIdle()
     {
@@ -120,44 +104,70 @@ public class SeagullBehavior : MonoBehaviour
 
     }
 
-    void RunEat() {
-        if(target == null){ 
+    void RunEat() 
+    {
+        if(target == null)
+        { 
+            RefreshFoodList(); // for spawned bubbles
+
+            if (allFood.Count == 0)
+            {
+                state = SeagullStates.idling;
+                return;
+            }
+
             target = FindNearest(allFood); 
             startPos = transform.position; 
             lerpTime = 0; 
-        } else {
+        } 
+        else 
+        {
             transform.position = Move(); 
-            if(touchingObj != null){ 
-                if(touchingObj.tag == "food"){  
-                    allFood.Remove(touchingObj); 
-                    hungerVal = 5; 
-                    Destroy(touchingObj); 
-                    touchingObj = null; 
-                    target = null; 
-                    state = SeagullStates.idling; 
-                }
+
+            if (touchingObj != null && touchingObj.CompareTag("food"))
+            {
+                allFood.Remove(touchingObj);
+                hungerVal = 5f;
+                Destroy(touchingObj);
+                touchingObj = null;
+                target = null;
+                state = SeagullStates.idling;
             }
         }
     }
 
-    void StepNeeds(){
+    void StepNeeds()
+    {
         hungerTime -= Time.deltaTime; 
-        if(hungerTime <= 0){ 
+
+        if(hungerTime <= 0f)
+        { 
             hungerVal--; 
             hungerTime = hungerStep; 
         }
     }
 
-    void FindAllFood(){
+    void FindAllFood()
+    {
         allFood.AddRange(GameObject.FindGameObjectsWithTag("food")); 
     }
 
-    Transform FindNearest(List<GameObject> objsToFind){
+    void RefreshFoodList()
+    {
+        allFood.Clear();
+        allFood.AddRange(GameObject.FindGameObjectsWithTag("food"));
+    }
+
+    Transform FindNearest(List<GameObject> objsToFind)
+    {
         float minDist = Mathf.Infinity; 
         Transform nearest = null; 
-        for(int i = 0; i < objsToFind.Count; i++){ 
+
+        for(int i = 0; i < objsToFind.Count; i++)
+        { 
             float dist = Vector3.Distance(transform.position, objsToFind[i].transform.position); 
-            if(dist < minDist){ 
+            if(dist < minDist)
+            { 
                 minDist = dist; 
                 nearest = objsToFind[i].transform; 
             }
@@ -165,19 +175,52 @@ public class SeagullBehavior : MonoBehaviour
         return nearest; 
     }
 
-    Vector3 Move(){
-        lerpTime += Time.deltaTime; 
-        float percent = idleWalkCurve.Evaluate(lerpTime/lerpTimeMax); 
-        Vector3 newPos = Vector3.LerpUnclamped(startPos, target.position, percent); 
-        return newPos; 
+    Vector3 Move()
+    {
+        if (target == null)
+        {
+            return transform.position;
+        } 
+
+        lerpTime += Time.deltaTime;
+        float t = Mathf.Clamp01(lerpTime / Mathf.Max(0.0001f, lerpTimeMax));
+        float percent = idleWalkCurve.Evaluate(t);
+
+        Vector3 newPos = Vector3.Lerp(startPos, target.position, percent);
+
+        // Snap when very close so we reliably enter triggers
+        if (Vector3.Distance(newPos, target.position) <= 0.02f)
+        {
+            newPos = target.position;
+        }
+
+        return newPos;
     }
 
-    void OnTriggerEnter2D(Collider2D col){
-        if(col != null) touchingObj = col.gameObject; 
+    //animation
+    void UpdateAnimation()
+    {
+        float speed = (transform.position - lastPosition).magnitude / Time.deltaTime;
+
+        bool isMoving = speed > 0.05f;
+
+        anim.SetBool("isWalking", isMoving);
+
+        lastPosition = transform.position;
     }
 
-    void OnTriggerExit2D(Collider2D col){
-        if(col != null) { 
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col != null) 
+        {
+            touchingObj = col.gameObject; 
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if(col != null) 
+        { 
             if(col.gameObject == touchingObj) touchingObj = null; 
         }
     }
