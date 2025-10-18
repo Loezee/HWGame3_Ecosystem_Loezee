@@ -261,6 +261,12 @@ public class SeagullBehavior : MonoBehaviour
             if(col.gameObject == touchingObj) touchingObj = null; 
         }
     }
+
+    //spawner
+    public void SetPossibleTargets(Transform[] targets)
+    {
+        this.possibleTargets = targets;
+    }
 }
 
 
