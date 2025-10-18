@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8408636309561555339}
   - component: {fileID: 6042919676155414846}
   - component: {fileID: 4677310260497506065}
+  - component: {fileID: 721194184721645093}
   - component: {fileID: 3480195577025569790}
   - component: {fileID: 3799207000333117938}
   m_Layer: 0
@@ -164,6 +165,103 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!82 &721194184721645093
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187425501323852371}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 33de64a2af64acc498ef36e844f008f2, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &3480195577025569790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,11 +275,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possibleTargets:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4868703371063483632, guid: 1f02a544819c5a743814b49d0182479f, type: 3}
+  - {fileID: 5178269245598464521, guid: 8999dd6b931b5954295e31907098ce92, type: 3}
+  - {fileID: 4938745819927460490, guid: f3185cd7dcedca945bf94044d79d3bcf, type: 3}
+  - {fileID: 6393443116870608567, guid: 175deebb026e50f4c8dc24f5e74947a5, type: 3}
+  - {fileID: 8722007580948003082, guid: ed682348402a8ce41ad0c8b0c1fceb1b, type: 3}
+  - {fileID: 6429240726869100340, guid: bcf6f26e79395984981069c9edb23a45, type: 3}
+  - {fileID: 8746313348479621235, guid: 236ce72e0604b5145b248c0b7ef0e0f8, type: 3}
+  - {fileID: 6281274828030572558, guid: ed68b7dc1433d784582ab84c08783c47, type: 3}
+  - {fileID: 6673333693627650749, guid: ba913f9e92d7bd3468c857f40b9144d5, type: 3}
+  - {fileID: 754554366236196628, guid: 4bd34117b30b8344782a90e9bf385747, type: 3}
+  - {fileID: 8443067564507836507, guid: 192f43bc8d50eec4080eb488a3c1b449, type: 3}
+  - {fileID: 4436706456491991634, guid: 655c4532da7ce67438a878a91f7c1ccd, type: 3}
+  - {fileID: 1266889410507097643, guid: eef6950ff857efa4c8e3736c99820ab4, type: 3}
   lerpTimeMax: 3
   idleWalkCurve:
     serializedVersion: 2
@@ -208,6 +314,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   hungerStep: 3
+  deathSound: {fileID: 8300000, guid: 33de64a2af64acc498ef36e844f008f2, type: 3}
 --- !u!95 &3799207000333117938
 Animator:
   serializedVersion: 7

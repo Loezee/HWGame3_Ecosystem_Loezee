@@ -14,21 +14,36 @@ public class BubbleBehavior : MonoBehaviour
     BubbleStates state = BubbleStates.Bubble;
 
 
-    [SerializeField] float timeToShark = 12f;   
-    [SerializeField] float sharkLifetime = 8f;  
-    [SerializeField] float sharkDieDuration = 0.1f; 
+    [SerializeField] 
+    float timeToShark = 12f;   
+
+    [SerializeField] 
+    float sharkLifetime = 8f;  
+
+    [SerializeField] 
+    float sharkDieDuration = 0.1f; 
+
     float timer;
 
-    [SerializeField] string formParam = "Form";
-    [SerializeField] string bubbleStateName = "Bubble_idle";
-    [SerializeField] string sharkStateName  = "Shark_swim";
+    [SerializeField] 
+    string formParam = "Form";
+    
+    [SerializeField] 
+    string bubbleStateName = "Bubble_idle";
+    [SerializeField] 
+    string sharkStateName  = "Shark_swim";
 
-    [SerializeField] string foodTag = "food";         
-    [SerializeField] string predatorTag = "predator"; 
-    [SerializeField] string seagullTag = "Seagull";   
+    [SerializeField] 
+    string foodTag = "food";        
+    [SerializeField] 
+    string predatorTag = "predator"; 
+    [SerializeField] 
+    string seagullTag = "Seagull";   
 
-    [SerializeField] float sharkCircleRadius = 1.6f;
-    [SerializeField] float sharkAngularSpeedDeg = 70f;
+    [SerializeField] 
+    float sharkCircleRadius = 1.6f;
+    [SerializeField] 
+    float sharkAngularSpeedDeg = 70f;
 
     Vector3 sharkCenter;
     float sharkAngleDeg;

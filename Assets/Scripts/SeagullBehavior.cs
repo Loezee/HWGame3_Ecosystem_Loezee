@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class SeagullBehavior : MonoBehaviour
 {
 
-
     [SerializeField]
     Transform[] possibleTargets; 
 
@@ -17,6 +16,10 @@ public class SeagullBehavior : MonoBehaviour
 
     [SerializeField]
     float hungerStep; 
+
+    [SerializeField]
+    AudioClip deathSound;
+    AudioSource audioSrc;
 
     //animation
     Animator anim;
@@ -45,6 +48,17 @@ public class SeagullBehavior : MonoBehaviour
 
     GameObject touchingObj;
 
+    void Awake()
+    {
+        audioSrc = GetComponent<AudioSource>();
+    if (audioSrc == null)
+    {
+        audioSrc = gameObject.AddComponent<AudioSource>();
+    }
+
+
+    audioSrc.playOnAwake = false;
+    }
 
     void Start()
     {
@@ -89,24 +103,30 @@ public class SeagullBehavior : MonoBehaviour
 
     void RunIdle()
     {
+        if (possibleTargets == null || possibleTargets.Length == 0) 
+        {
+            return;
+        }
+
         if (target == null)
-        { 
-            int newTarget = Random.Range(0, possibleTargets.Length); 
-            target = possibleTargets[newTarget]; 
-            startPos = transform.position; 
-            lerpTime = 0f; 
+        {
+            int newTarget = Random.Range(0, possibleTargets.Length);
+            target = possibleTargets[newTarget];
+            startPos = transform.position;
+            lerpTime = 0f;
         }
         else
         {
-            transform.position = Move(); 
-        }
-        StepNeeds(); 
-        if (hungerVal <= 0)
-        { 
-            target = null; 
-            state = SeagullStates.eating; 
+            transform.position = Move();
         }
 
+        StepNeeds();
+
+        if (hungerVal <= 0f)
+        {
+            target = null;
+            state = SeagullStates.eating;
+        }
     }
 
     void RunEat() 
@@ -170,7 +190,17 @@ public class SeagullBehavior : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
         }
 
+        DeathSound();
+
         Destroy(gameObject, 1f);
+    }
+
+    void DeathSound()
+    {
+        if (audioSrc != null && deathSound != null)
+        {
+            audioSrc.PlayOneShot(deathSound);
+        }
     }
 
     void StepNeeds()
@@ -225,7 +255,6 @@ public class SeagullBehavior : MonoBehaviour
 
         Vector3 newPos = Vector3.Lerp(startPos, target.position, percent);
 
-        // Snap when very close so we reliably enter triggers
         if (Vector3.Distance(newPos, target.position) <= 0.02f)
         {
             newPos = target.position;

@@ -39,7 +39,10 @@ public class SharkBehavior : MonoBehaviour
         if (other != null && other.CompareTag(seagullTag))
         {
             var gull = other.GetComponent<SeagullBehavior>();
-            if (gull != null) gull.Die();
+            if (gull != null) 
+            {
+                gull.Die();
+            }
         }
     }
 }

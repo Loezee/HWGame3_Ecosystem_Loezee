@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: -1131802689570784725, guid: f932b442bdc5088478f55e41c4e510d5, type: 3}
-  m_Color: {r: 0.5503293, g: 0.6501956, b: 0.7830189, a: 1}
+  m_Color: {r: 0.6839622, g: 0.82091194, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -213,7 +213,6 @@ MonoBehaviour:
   formParam: Form
   bubbleStateName: Bubble_idle
   sharkStateName: Shark_swim
-  sharkDieStateName: Shark_die
   foodTag: food
   predatorTag: predator
   seagullTag: Seagull
